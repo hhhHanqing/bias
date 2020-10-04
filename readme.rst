@@ -39,5 +39,7 @@ Documentation
 
 http://public.iorodeo.com/notes/bias/
 
-
+Haniqng-Note:
+1. If you want to debug BIAS, just modify the source code, delete the corresponding built files, and rebuild it through mingw32-make.
+2. Not sure whether you have to install all the dependencies, i.e., Qt or OpenCV, to enable debugging BIAS (most files don't need to be rebuilt), maybe not. Maybe by modifying the cmake-relevant files/path variables, you can transfer the essential package between computers.
 

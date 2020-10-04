@@ -122,7 +122,7 @@ namespace bias {
             // -----------------------------------------------
 
             // Get Strobe info
-            unsigned int strobeSource = 2;
+            unsigned int strobeSource = 1;
             fc2StrobeInfo strobeInfo_fc2;
             strobeInfo_fc2.source = strobeSource;
             error = fc2GetStrobeInfo(context_,&strobeInfo_fc2);
@@ -148,7 +148,7 @@ namespace bias {
             // Set Strobe control
             fc2StrobeControl strobeControl_fc2;
             strobeControl_fc2.source = strobeSource;
-            strobeControl_fc2.onOff = TRUE;
+            strobeControl_fc2.onOff = False;
             strobeControl_fc2.polarity = 1;
             strobeControl_fc2.delay = 0.0;
             strobeControl_fc2.duration = 0.0;
@@ -531,7 +531,7 @@ namespace bias {
         ImageInfo imgInfo;
         PixelFormat pixFormat;
 
-        TriggerType savedTrigType = getTriggerType(); 
+        TriggerType savedTrigType = getTriggerType();
 
         if (savedTrigType == TRIGGER_EXTERNAL) 
         {
@@ -843,21 +843,22 @@ namespace bias {
         // Currently only sets to mode 0, doesn't check for
         // support, etc.
         // ------------------------------------------------ 
-        fc2Error error = fc2SetGPIOPinDirection(context_, 0, 0);
-        if (error != FC2_ERROR_OK) 
-        {
-            std::stringstream ssError;
-            ssError << __PRETTY_FUNCTION__;
-            ssError << ": unable to set GPIO direction";
-            throw RuntimeError(ERROR_FC2_CREATE_IMAGE, ssError.str());
-        }
+		
+        // fc2Error error = fc2SetGPIOPinDirection(context_, 0, 0);
+        // if (error != FC2_ERROR_OK) 
+        // {
+        //    std::stringstream ssError;
+        //    ssError << __PRETTY_FUNCTION__;
+        //    ssError << ": unable to set GPIO direction";
+        //    throw RuntimeError(ERROR_FC2_CREATE_IMAGE, ssError.str());
+        // }
         
         fc2TriggerMode trigMode = getTriggerMode_fc2();
         trigMode.onOff = TRUE;
-        trigMode.mode = 0;
-        trigMode.source = 0;
-        trigMode.parameter = 0;
-        trigMode.polarity = 0;
+        // trigMode.mode = 0;
+        // trigMode.source = 0;
+        // trigMode.parameter = 0;
+        // trigMode.polarity = 0;
         setTriggerMode(trigMode);
     }
 
@@ -1091,26 +1092,28 @@ namespace bias {
             throw RuntimeError(ERROR_FC2_GET_EMBEDDED_IMAGE_INFO, ssError.str());
         }
 
-        // If embedded time stamping available enable it
-        if (embeddedInfo.timestamp.available == TRUE)
-        {
-            haveEmbeddedTimeStamp_ = true;
-            embeddedInfo.timestamp.onOff = true;
-        }
-        else
-        {
-            haveEmbeddedTimeStamp_ = false;
-            embeddedInfo.timestamp.onOff = false;
-        }
-
-        error = fc2SetEmbeddedImageInfo(context_, &embeddedInfo); 
-        if (error != FC2_ERROR_OK)
-        {
-            std::stringstream ssError;
-            ssError << __PRETTY_FUNCTION__;
-            ssError << ": unable to set FlyCapture2 embedded image info";
-            throw RuntimeError(ERROR_FC2_SET_EMBEDDED_IMAGE_INFO, ssError.str());
-        }
+        // if (embeddedInfo.timestamp.available == TRUE)
+        // {
+            // haveEmbeddedTimeStamp_ = true;
+            // embeddedInfo.timestamp.onOff = true;
+        // }
+        // else
+        // {
+            // haveEmbeddedTimeStamp_ = false;
+            // embeddedInfo.timestamp.onOff = false;
+        // }
+		
+		haveEmbeddedTimeStamp_ = false;
+		// embeddedInfo.timestamp.onOff = false;
+			
+        // error = fc2SetEmbeddedImageInfo(context_, &embeddedInfo); 
+        // if (error != FC2_ERROR_OK)
+        // {
+            // std::stringstream ssError;
+            // ssError << __PRETTY_FUNCTION__;
+            // ssError << ": unable to set FlyCapture2 embedded image info";
+            // throw RuntimeError(ERROR_FC2_SET_EMBEDDED_IMAGE_INFO, ssError.str());
+        // }
 
         // Initalize time stamp data
         timeStamp_.seconds = 0;
